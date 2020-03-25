@@ -13,7 +13,22 @@
         />
       </div>
       <v-toolbar-title>Visual Machine Learning</v-toolbar-title>
-
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            v-on="on"
+            fab
+            depressed
+            small
+            class="ml-2 mt-1"
+            color="transparent"
+            @click="openInformationDialog()"
+          >
+            <v-icon>mdi-information-outline</v-icon>
+          </v-btn>
+        </template>
+        <span>Information</span>
+      </v-tooltip>
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
@@ -31,21 +46,6 @@
         </template>
         <span>Charts</span>
       </v-tooltip>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn
-            v-on="on"
-            fab
-            depressed
-            small
-            color="transparent"
-            @click="openInformationDialog()"
-          >
-            <v-icon>mdi-information-outline</v-icon>
-          </v-btn>
-        </template>
-        <span>Information</span>
-      </v-tooltip>
     </v-app-bar>
 
     <v-content>
@@ -53,51 +53,23 @@
     </v-content>
     <snackbar />
     <informationDialog />
-    <v-footer dark padless>
-      <v-card class="flex " flat tile>
-        <v-card-title class="info pa-1">
-          <v-spacer></v-spacer>
-          <v-btn
-            v-for="(social, index) in socials"
-            :key="index"
-            class="mx-4"
-            dark
-            icon
-            :href="social.url"
-            target="_blank"
-          >
-            <v-icon size="24px">{{ social.icon }}</v-icon>
-          </v-btn>
-          <v-spacer></v-spacer>
-        </v-card-title>
-      </v-card>
-    </v-footer>
+    <footers />
   </v-app>
 </template>
 
 <script>
 import Snackbar from "./components/Snackbar";
+import Footers from "./components/Footers";
 import InformationDialog from "./components/InformationDialog";
 import * as tfvis from "@tensorflow/tfjs-vis";
 export default {
   name: "App",
   components: {
     Snackbar,
-    InformationDialog
+    InformationDialog,
+    Footers
   },
-  data: () => ({
-    socials: [
-      { icon: "mdi-github", url: "https://github.com/FelixBecquart1990" },
-      {
-        icon: "mdi-linkedin",
-        url: "https://www.linkedin.com/in/félix-becquart-8a5a46a6"
-      },
-      {
-        icon: "mdi-facebook",
-        url: "https://www.facebook.com/felix.becquart"
-      }
-    ]
-  }),
+
   methods: {
     async toggleVisor() {
       tfvis.visor().toggle();
@@ -108,3 +80,9 @@ export default {
   }
 };
 </script>
+<style>
+/* width */
+::-webkit-scrollbar {
+  width: 0px;
+}
+</style>
