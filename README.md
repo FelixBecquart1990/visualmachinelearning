@@ -47,4 +47,4 @@ My name is [Félix](https://www.linkedin.com/in/félix-becquart-8a5a46a6) and I 
 
 ## License
 
-Except where otherwise noted, code samples in the repository are made available under an [MIT License](https://github.com/FelixBecquart1990/visualmachinelearning/LICENSE) (so you can reuse with very few limitations).
+Except where otherwise noted, code samples in the repository are made available under an [MIT License](https://github.com/FelixBecquart1990/visualmachinelearning/blob/master/LICENSE) (so you can reuse with very few limitations).
