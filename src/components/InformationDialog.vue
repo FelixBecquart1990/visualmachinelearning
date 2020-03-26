@@ -39,12 +39,12 @@
             class="text--info"
             style="text-decoration: none;"
           >Github repository</a>
-          of this project reachs enough stars:
+          of this project gets enough stars:
           <br />- binary classification example
           <br />- multi-class classification example
           <br />- save/load model on Local Storage
           <br />
-          <small>features still based on Justin Emery's course</small>
+          <small>features based on Justin Emery's course</small>
         </v-card-text>
         <v-card-title class="primary--text">
           <v-icon color="black" left class="primary--text">mdi-cog</v-icon>Technologies
@@ -93,7 +93,7 @@
           <v-icon color="black" left class="primary--text">mdi-account</v-icon>Author
         </v-card-title>
         <v-card-text>
-          My name is Félix and I have been learning
+          My name is Félix. I have been learning
           <b>front-end</b> from 2016
           and
           <b>machine learning</b> from 2019. I like to combine technologies

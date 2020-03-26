@@ -11,7 +11,7 @@
           <v-card class="mb-5 pa-4" outlined>
             <div class="body-1 ml-3">
               This application has been created to help people to visualy &#128064; understand how machine learning works.
-              <br />We will go through a 5 minutes basic example of real estate &#127969; price prediction.
+              <br />We will go through a basic 5 minute example of real estate &#127969; price prediction.
             </div>
           </v-card>
           <v-btn color="primary" @click="next()" rounded class="mb-2">Let's go &#128640;</v-btn>
@@ -31,7 +31,7 @@
               <p class="my-2 ml-3">
                 &#128319; Price &#128178;
                 <br />&#128319; Square feet &#127969;
-              </p>Then a good wait to understand our dataset is to &#128200; visualize it.
+              </p>A good way to understand our dataset is to &#128200; visualize it.
             </div>
             <v-btn
               @click="loadData()"
@@ -79,7 +79,7 @@
           <v-card outlined class="mb-5 pa-4">
             <div class="body-1 ml-3 mt-3 mb-2">
               Let's think &#128173; about the architecture of our model.
-              <br />As we face a linear regression problem, we will only need one neurone &#127744;.
+              <br />As we face a linear regression problem, we will only need one neuron &#127744;.
               <br />
               <br />Next, our model needs to be compiled with parameters like:
               <p class="my-2 ml-3">
@@ -111,7 +111,7 @@
             <div class="body-1 ml-3 mt-3 mb-2">
               Now it is time to fit &#127856; our model with the dataset.
               <br />We do it many times so that our model can learn &#128300; about this dataset.
-              <br />And everytime, we displaying our model prediction &#128200; and the error rate &#128201; so that we can get a real time feedback of the evolution of our model &#128526;&#127871;.
+              <br />With our model prediction &#128200; and the error rate &#128201; we can get a real time feedback of the evolution of our model &#128526;&#127871;.
             </div>
             <v-scroll-y-transition>
               <div v-if="epoch>0" class="ml-3">
@@ -172,7 +172,7 @@
                     </v-row>
                   </v-container>
                   <div>
-                    Congratulation &#127775;, the training error rate is really close to the testing error rate.
+                    Congratulations &#127775;, the training error rate is really close to the testing error rate.
                     <br />We now know that our model is ready to be used &#127870;.
                   </div>
                 </div>

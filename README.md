@@ -2,6 +2,8 @@
 
 # Visual Machine Learning
 
+[Demo](https://visualmachinelearning.web.app/)
+
 ## Technologies
 
 - Tensorflow.js ~ machine learning
