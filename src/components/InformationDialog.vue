@@ -9,8 +9,8 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-card-title>
-        <v-card-title>
-          <v-icon color="black" left>mdi-handshake</v-icon>Source
+        <v-card-title class="primary--text">
+          <v-icon color="black" left class="primary--text">mdi-handshake</v-icon>Source
         </v-card-title>
         <v-card-text class="pb-5">
           This machine learning example is based on
@@ -28,8 +28,8 @@
             style="text-decoration: none;"
           >Udemy course</a>.
         </v-card-text>
-        <v-card-title>
-          <v-icon color="black" left>mdi-format-list-text</v-icon>Improvements
+        <v-card-title class="primary--text">
+          <v-icon color="black" left class="primary--text">mdi-format-list-text</v-icon>Improvements
         </v-card-title>
         <v-card-text class="pb-5">
           These following features will be added if the
@@ -46,8 +46,8 @@
           <br />
           <small>features still based on Justin Emery's course</small>
         </v-card-text>
-        <v-card-title>
-          <v-icon color="black" left>mdi-cog</v-icon>Technologies
+        <v-card-title class="primary--text">
+          <v-icon color="black" left class="primary--text">mdi-cog</v-icon>Technologies
         </v-card-title>
         <v-card-text class="pb-5">
           -
@@ -57,7 +57,7 @@
             class="text--info"
             style="text-decoration: none;"
           >
-            <v-icon color="black" left>mdi-robot</v-icon>Tensorflow.js
+            <v-icon color="black" left class="primary--text">mdi-robot</v-icon>Tensorflow.js
           </a>
           ~ machine learning
           <br />-
@@ -67,11 +67,11 @@
             class="text--info"
             style="text-decoration: none;"
           >
-            <v-icon color="black" left>mdi-vuejs</v-icon>Vue.js
+            <v-icon color="black" left class="primary--text">mdi-vuejs</v-icon>Vue.js
           </a>
           ~ front-end framework
           <br />-
-          <v-icon color="black" left>mdi-vuetify</v-icon>
+          <v-icon color="black" left class="primary--text">mdi-vuetify</v-icon>
           <a
             href="https://vuetifyjs.com/"
             target="_blank"
@@ -80,7 +80,7 @@
           >Vuetify.js</a>
           ~ material design library
           <br />-
-          <v-icon color="black" left>mdi-firebase</v-icon>
+          <v-icon color="black" left class="primary--text">mdi-firebase</v-icon>
           <a
             href="https://firebase.google.com/"
             target="_blank"
@@ -89,8 +89,8 @@
           >Firebase</a>
           ~ hosting
         </v-card-text>
-        <v-card-title>
-          <v-icon color="black" left>mdi-account</v-icon>Author
+        <v-card-title class="primary--text">
+          <v-icon color="black" left class="primary--text">mdi-account</v-icon>Author
         </v-card-title>
         <v-card-text>
           My name is Félix and I have been learning
@@ -99,7 +99,9 @@
           <b>machine learning</b> from 2019. I like to combine technologies
           to create innovative projects.
         </v-card-text>
-        <v-card-text class="pb-0">My other projects:</v-card-text>
+        <v-card-text class="pb-0 primary--text">
+          <b>My other projects:</b>
+        </v-card-text>
         <v-slide-group active-class="success" show-arrows>
           <v-slide-item v-for="(project, index) in projects" :key="index">
             <v-card class="ma-4" width="190" :href="project.url" target="_blank">
@@ -180,4 +182,3 @@ export default {
 };
 </script>
 
-<style scoped></style>

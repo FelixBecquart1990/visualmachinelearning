@@ -1,11 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="transparent"
-      dark
-      src="https://i.imgur.com/qWFL7Xk.jpg"
-    >
+    <v-app-bar app color="transparent" dark src="https://i.imgur.com/qWFL7Xk.jpg">
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -64,8 +59,7 @@
           target="_blank"
           href="https://github.com/FelixBecquart1990"
           style="text-decoration: none;"
-          >Félix Becquart</a
-        >
+        >Félix Becquart</a>
       </v-col>
     </v-footer>
   </v-app>

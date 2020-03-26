@@ -3,11 +3,26 @@
     <v-container style="max-width:900px">
       <v-stepper v-model="step" vertical class="elevation-0">
         <v-stepper-step :complete="step > 1" step="1">
-          Load and prepare data
-          <small>Summarize if needed</small>
+          Introduction
+          <!-- <small>Summarize if needed</small> -->
         </v-stepper-step>
 
         <v-stepper-content step="1">
+          <v-card class="mb-5 pa-4" outlined>
+            <div class="body-1 ml-3">
+              This application has been created to help people to visualy &#128064; understand how machine learning works.
+              <br />We will go through a 5 minutes basic example of real estate &#127969; price prediction.
+            </div>
+          </v-card>
+          <v-btn color="primary" @click="next()" rounded class="mb-2">Let's go &#128640;</v-btn>
+        </v-stepper-content>
+
+        <v-stepper-step :complete="step > 2" step="2">
+          Load and prepare data
+          <!-- <small>Summarize if needed</small> -->
+        </v-stepper-step>
+
+        <v-stepper-content step="2">
           <v-card class="mb-5 pa-4" outlined>
             <h3 class="headline mb-3">Load data</h3>
             <div class="body-1 ml-3">
@@ -25,24 +40,29 @@
               color="primary"
               rounded
               class="my-3 ml-3"
-            >Load Data &#128640;</v-btn>
-            <h3 class="headline mb-3">Prepare data</h3>
-            <div class="body-1 ml-3">
-              Here we are, the dataset is loaded &#127881;!
-              <br />To fit our model, we now need to prepare &#127869; our dataset with the following steps:
-              <p class="my-2 ml-3">
-                &#128319; Shuffle &#127922; the dataset to avoid unbalanced training
-                <br />&#128319; Normalize &#127981; the dataset to work with the same scale
-                <br />&#128319; Split the dataset into a training &#128296; dataset and a testing &#128269; dataset
-              </p>
-            </div>
-            <v-btn
-              @click="prepareData()"
-              :disabled="disablePrepareData"
-              color="primary"
-              rounded
-              class="my-3 ml-3"
-            >Prepare Data &#127858;</v-btn>
+            >Load Data &#128722;</v-btn>
+            <v-scroll-y-transition>
+              <div v-if="disableLoadData">
+                <h3 class="headline mb-3">Prepare data</h3>
+                <div class="body-1 ml-3">
+                  Here we are, the dataset is loaded &#127881;!
+                  <br />To fit our model, we now need to prepare &#127869; our dataset with the following steps:
+                  <p class="my-2 ml-3">
+                    &#128319; Shuffle &#127922; the dataset to avoid unbalanced training
+                    <br />&#128319; Normalize &#127981; the dataset to work with the same scale
+                    <br />&#128319; Split the dataset into a training &#128296; dataset and a testing &#128269; dataset
+                  </p>
+                </div>
+
+                <v-btn
+                  @click="prepareData()"
+                  :disabled="disablePrepareData"
+                  color="primary"
+                  rounded
+                  class="my-3 ml-3"
+                >Prepare Data &#127858;</v-btn>
+              </div>
+            </v-scroll-y-transition>
           </v-card>
           <v-btn
             color="primary"
@@ -51,10 +71,11 @@
             :disabled="disableStep1"
             class="mb-2"
           >Continue</v-btn>
+          <v-btn text rounded class="ml-3" @click="previous()">Previous</v-btn>
         </v-stepper-content>
 
-        <v-stepper-step :complete="step > 2" step="2">Create a model</v-stepper-step>
-        <v-stepper-content step="2">
+        <v-stepper-step :complete="step > 3" step="3">Create a model</v-stepper-step>
+        <v-stepper-content step="3">
           <v-card outlined class="mb-5 pa-4">
             <div class="body-1 ml-3 mt-3 mb-2">
               Let's think &#128173; about the architecture of our model.
@@ -84,21 +105,25 @@
           <v-btn text rounded class="ml-3" @click="previous()">Previous</v-btn>
         </v-stepper-content>
 
-        <v-stepper-step :complete="step > 3" step="3">Train the model</v-stepper-step>
-        <v-stepper-content step="3">
+        <v-stepper-step :complete="step > 4" step="4">Train the model</v-stepper-step>
+        <v-stepper-content step="4">
           <v-card outlined class="mb-5 pa-4">
             <div class="body-1 ml-3 mt-3 mb-2">
               Now it is time to fit &#127856; our model with the dataset.
               <br />We do it many times so that our model can learn &#128300; about this dataset.
               <br />And everytime, we displaying our model prediction &#128200; and the error rate &#128201; so that we can get a real time feedback of the evolution of our model &#128526;&#127871;.
             </div>
+            <v-scroll-y-transition>
+              <div v-if="epoch>0" class="ml-3">
+                <strong>Epochs: {{epoch}}/20</strong>
+              </div>
+            </v-scroll-y-transition>
 
-            <div v-if="epoch>0" class="ml-3">
-              <strong>Epochs: {{epoch}}/20</strong>
-            </div>
-            <div class="ml-3" v-if="trainingStatus != ''">
-              <strong>Trained loss: {{ trainingStatus }}</strong>
-            </div>
+            <v-scroll-y-transition>
+              <div class="ml-3" v-if="trainingStatus != ''">
+                <strong>Trained loss: {{ trainingStatus }}</strong>
+              </div>
+            </v-scroll-y-transition>
             <v-btn
               @click="train()"
               :disabled="disableTrain"
@@ -118,36 +143,40 @@
           <v-btn text rounded class="ml-3" @click="previous()">Previous</v-btn>
         </v-stepper-content>
 
-        <v-stepper-step :complete="step > 4" step="4">Test the model</v-stepper-step>
-        <v-stepper-content step="4">
+        <v-stepper-step :complete="step > 5" step="5">Test the model</v-stepper-step>
+        <v-stepper-content step="5">
           <v-card outlined class="mb-5 pa-4">
             <div class="body-1 ml-3 mt-3 mb-2">
               Our model has been trained &#127882;!
               <br />We can now evaluate &#128207; it thanks to our testing dataset.
               <br />The goal is to compare the error rate of our training dataset and our testing dataset.
               <br />We want them to be as similar as possible. It means that our model has been trained correctly.
-              <v-container v-if="testingStatus" class="my-3">
-                <v-row no-gutters>
-                  <v-col cols="6">
-                    <v-card class="pa-2" outlined tile>Training Loss</v-card>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-card class="pa-2" outlined tile>Testing Loss</v-card>
-                  </v-col>
-                </v-row>
-                <v-row no-gutters>
-                  <v-col cols="6">
-                    <v-card class="pa-2" outlined tile>{{trainingStatus}}</v-card>
-                  </v-col>
-                  <v-col cols="6">
-                    <v-card class="pa-2" outlined tile>{{testingStatus}}</v-card>
-                  </v-col>
-                </v-row>
-              </v-container>
-              <div v-if="testingStatus">
-                Congratulation &#127775;, the training error rate is really close to the testing error rate.
-                <br />We now know that our model is ready to be used &#127870;.
-              </div>
+              <v-scroll-y-transition>
+                <div v-if="testingStatus">
+                  <v-container class="my-3">
+                    <v-row no-gutters>
+                      <v-col cols="6">
+                        <v-card class="pa-2" outlined tile>Training Loss</v-card>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-card class="pa-2" outlined tile>Testing Loss</v-card>
+                      </v-col>
+                    </v-row>
+                    <v-row no-gutters>
+                      <v-col cols="6">
+                        <v-card class="pa-2" outlined tile>{{trainingStatus}}</v-card>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-card class="pa-2" outlined tile>{{testingStatus}}</v-card>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                  <div>
+                    Congratulation &#127775;, the training error rate is really close to the testing error rate.
+                    <br />We now know that our model is ready to be used &#127870;.
+                  </div>
+                </div>
+              </v-scroll-y-transition>
             </div>
             <v-btn
               @click="test()"
@@ -168,16 +197,16 @@
           <v-btn text rounded class="ml-3" @click="previous()">Previous</v-btn>
         </v-stepper-content>
 
-        <v-stepper-step :complete="step > 5" step="5">Predict</v-stepper-step>
-        <v-stepper-content step="5">
+        <v-stepper-step :complete="step > 6" step="6">Predict</v-stepper-step>
+        <v-stepper-content step="6">
           <v-card outlined class="mb-5 pa-4">
             <div class="body-1 ml-3 mt-3 mb-2">
               Here we are, we can now use our model to predict the price of any real estate &#127968;.
               <br />Enjoy &#127878;
             </div>
-            <v-container v-if="testingStatus" class="mt-3 mb-0">
+            <v-container class="mt-3 mb-0">
               <v-row no-gutters>
-                <v-col cols="6" sm="12">
+                <v-col cols="12" sm="12" md="6">
                   <v-text-field
                     type="number"
                     label="Solo"
@@ -187,10 +216,12 @@
                     suffix="Square feet"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="6" sm="12">
-                  <div class="pa-3" tile v-if="predictionOutput">
-                    <strong>{{ predictionOutput }}</strong>
-                  </div>
+                <v-col cols="12" sm="12" md="6">
+                  <v-scroll-y-transition>
+                    <div class="pa-3" tile v-if="predictionOutput">
+                      <strong>{{ predictionOutput }}</strong>
+                    </div>
+                  </v-scroll-y-transition>
                 </v-col>
               </v-row>
             </v-container>
@@ -198,6 +229,22 @@
             <v-btn @click="predict()" color="primary" rounded class="mb-3 ml-3">Predict &#128302;</v-btn>
           </v-card>
           <!-- <v-btn color="primary" @click="step = 1" rounded>Continue</v-btn> -->
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-btn
+                v-on="on"
+                fab
+                depressed
+                small
+                class="ml-2"
+                color="transparent"
+                @click="openInformationDialog()"
+              >
+                <v-icon class="text--primary">mdi-information-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>Information</span>
+          </v-tooltip>
           <v-btn text rounded class="ml-3" @click="previous()">Previous</v-btn>
         </v-stepper-content>
       </v-stepper>
@@ -400,7 +447,6 @@ export default {
       );
     },
     async test() {
-      this.disableTest = true;
       this.loadingTest = true;
       const lossTensor = this.model.evaluate(
         this.testingFeatureTensor,
@@ -410,6 +456,8 @@ export default {
       this.testingStatus = loss.toPrecision(5);
 
       this.loadingTest = false;
+      this.disableTest = true;
+
       this.disableStep4 = false;
       this.$store.commit("setSnackbar", {
         color: "success",
@@ -514,6 +562,9 @@ export default {
     },
     next() {
       this.step += 1;
+    },
+    openInformationDialog() {
+      this.$store.commit("setInformationDialog", true);
     }
     // async save() {
     //   const saveResults = await this.model.save(
