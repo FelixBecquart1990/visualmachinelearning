@@ -1,85 +1,207 @@
 <template>
   <div class="home">
-    <v-stepper v-model="step" vertical class="elevation-0">
-      <v-stepper-step :complete="step > 1" step="1">
-        Load data
-        <small>Summarize if needed</small>
-      </v-stepper-step>
+    <v-container style="max-width:900px">
+      <v-stepper v-model="step" vertical class="elevation-0">
+        <v-stepper-step :complete="step > 1" step="1">
+          Load and prepare data
+          <small>Summarize if needed</small>
+        </v-stepper-step>
 
-      <v-stepper-content step="1">
-        <v-card color="grey lighten-1" class="mb-12 pa-4" height="200px">
+        <v-stepper-content step="1">
+          <v-card class="mb-5 pa-4" outlined>
+            <h3 class="headline mb-3">Load data</h3>
+            <div class="body-1 ml-3">
+              First we need to extract our dataset from a local CSV file &#128196; available in this application.
+              <br />We will not use the whole dataset so we only select &#128373; the two columns that we will need:
+              <p class="my-2 ml-3">
+                &#128319; Price &#128178;
+                <br />&#128319; Square feet &#127969;
+              </p>Then a good wait to understand our dataset is to &#128200; visualize it.
+            </div>
+            <v-btn
+              @click="loadData()"
+              :disabled="disableLoadData"
+              :loading="loadingData"
+              color="primary"
+              rounded
+              class="my-3 ml-3"
+            >Load Data &#128640;</v-btn>
+            <h3 class="headline mb-3">Prepare data</h3>
+            <div class="body-1 ml-3">
+              Here we are, the dataset is loaded &#127881;!
+              <br />To fit our model, we now need to prepare &#127869; our dataset with the following steps:
+              <p class="my-2 ml-3">
+                &#128319; Shuffle &#127922; the dataset to avoid unbalanced training
+                <br />&#128319; Normalize &#127981; the dataset to work with the same scale
+                <br />&#128319; Split the dataset into a training &#128296; dataset and a testing &#128269; dataset
+              </p>
+            </div>
+            <v-btn
+              @click="prepareData()"
+              :disabled="disablePrepareData"
+              color="primary"
+              rounded
+              class="my-3 ml-3"
+            >Prepare Data &#127858;</v-btn>
+          </v-card>
           <v-btn
-            @click="loadData()"
-            :disabled="disableLoadData"
-            :loading="loadingData"
-            >Load Data</v-btn
-          >
-        </v-card>
-        <v-btn color="primary" @click="step = 2">Continue</v-btn>
-        <v-btn text>Cancel</v-btn>
-      </v-stepper-content>
+            color="primary"
+            @click="next()"
+            rounded
+            :disabled="disableStep1"
+            class="mb-2"
+          >Continue</v-btn>
+        </v-stepper-content>
 
-      <v-stepper-step :complete="step > 2" step="2"
-        >Create a model</v-stepper-step
-      >
-      <v-stepper-content step="2">
-        <v-card color="grey lighten-1" class="mb-12 pa-4" height="200px">
-          <v-btn @click="createModel()" :disabled="disableCreateModel"
-            >Create a model</v-btn
-          ></v-card
-        >
-        <v-btn color="primary" @click="step = 3">Continue</v-btn>
-        <v-btn text>Cancel</v-btn>
-      </v-stepper-content>
+        <v-stepper-step :complete="step > 2" step="2">Create a model</v-stepper-step>
+        <v-stepper-content step="2">
+          <v-card outlined class="mb-5 pa-4">
+            <div class="body-1 ml-3 mt-3 mb-2">
+              Let's think &#128173; about the architecture of our model.
+              <br />As we face a linear regression problem, we will only need one neurone &#127744;.
+              <br />
+              <br />Next, our model needs to be compiled with parameters like:
+              <p class="my-2 ml-3">
+                &#128319; An activation function &#128678;
+                <br />&#128319; The way we want to compute the error &#128681;
+              </p>
+            </div>
+            <v-btn
+              @click="createModel()"
+              :disabled="disableCreateModel"
+              color="primary"
+              rounded
+              class="my-3 ml-3"
+            >Create a model &#128736;</v-btn>
+          </v-card>
+          <v-btn
+            color="primary"
+            @click="next()"
+            rounded
+            :disabled="disableStep2"
+            class="mb-2"
+          >Continue</v-btn>
+          <v-btn text rounded class="ml-3" @click="previous()">Previous</v-btn>
+        </v-stepper-content>
 
-      <v-stepper-step :complete="step > 3" step="3"
-        >Train the model</v-stepper-step
-      >
-      <v-stepper-content step="3">
-        <v-card color="grey lighten-1" class="mb-12 pa-4" height="200px"
-          ><v-btn
-            @click="train()"
-            :disabled="disableTrain"
-            :loading="loadingTrain"
-            >Train model</v-btn
-          >
-          <div>{{ trainingStatus || "Loading data..." }}</div>
-        </v-card>
-        <v-btn color="primary" @click="step = 4">Continue</v-btn>
-        <v-btn text>Cancel</v-btn>
-      </v-stepper-content>
+        <v-stepper-step :complete="step > 3" step="3">Train the model</v-stepper-step>
+        <v-stepper-content step="3">
+          <v-card outlined class="mb-5 pa-4">
+            <div class="body-1 ml-3 mt-3 mb-2">
+              Now it is time to fit &#127856; our model with the dataset.
+              <br />We do it many times so that our model can learn &#128300; about this dataset.
+              <br />And everytime, we displaying our model prediction &#128200; and the error rate &#128201; so that we can get a real time feedback of the evolution of our model &#128526;&#127871;.
+            </div>
 
-      <v-stepper-step :complete="step > 4" step="4"
-        >Test the model</v-stepper-step
-      >
-      <v-stepper-content step="4">
-        <v-card color="grey lighten-1" class="mb-12 pa-4" height="200px"
-          ><v-btn @click="test()" :disabled="disableTest" :loading="loadingTest"
-            >Test model</v-btn
-          >
-          <div>{{ testingStatus || "Not yet tested" }}</div>
-        </v-card>
-        <v-btn color="primary" @click="step = 5">Continue</v-btn>
-        <v-btn text>Cancel</v-btn>
-      </v-stepper-content>
+            <div v-if="epoch>0" class="ml-3">
+              <strong>Epochs: {{epoch}}/20</strong>
+            </div>
+            <div class="ml-3" v-if="trainingStatus != ''">
+              <strong>Trained loss: {{ trainingStatus }}</strong>
+            </div>
+            <v-btn
+              @click="train()"
+              :disabled="disableTrain"
+              :loading="loadingTrain"
+              color="primary"
+              rounded
+              class="my-3 ml-3"
+            >Train model &#128170;</v-btn>
+          </v-card>
+          <v-btn
+            color="primary"
+            @click="next()"
+            rounded
+            :disabled="disableStep3"
+            class="mb-2"
+          >Continue</v-btn>
+          <v-btn text rounded class="ml-3" @click="previous()">Previous</v-btn>
+        </v-stepper-content>
 
-      <v-stepper-step :complete="step > 5" step="5">Predict</v-stepper-step>
-      <v-stepper-content step="5">
-        <v-card color="grey lighten-1" class="mb-12 pa-4" height="200px">
-          <v-text-field
-            type="number"
-            label="Solo"
-            placeholder="Prediction input"
-            solo
-            v-model="predictionInput"
-          ></v-text-field>
-          <v-btn @click="predict()">Predict</v-btn>
-          <div>{{ predictionOutput || "" }}</div>
-        </v-card>
-        <v-btn color="primary" @click="step = 1">Continue</v-btn>
-        <v-btn text>Cancel</v-btn>
-      </v-stepper-content>
-    </v-stepper>
+        <v-stepper-step :complete="step > 4" step="4">Test the model</v-stepper-step>
+        <v-stepper-content step="4">
+          <v-card outlined class="mb-5 pa-4">
+            <div class="body-1 ml-3 mt-3 mb-2">
+              Our model has been trained &#127882;!
+              <br />We can now evaluate &#128207; it thanks to our testing dataset.
+              <br />The goal is to compare the error rate of our training dataset and our testing dataset.
+              <br />We want them to be as similar as possible. It means that our model has been trained correctly.
+              <v-container v-if="testingStatus" class="my-3">
+                <v-row no-gutters>
+                  <v-col cols="6">
+                    <v-card class="pa-2" outlined tile>Training Loss</v-card>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-card class="pa-2" outlined tile>Testing Loss</v-card>
+                  </v-col>
+                </v-row>
+                <v-row no-gutters>
+                  <v-col cols="6">
+                    <v-card class="pa-2" outlined tile>{{trainingStatus}}</v-card>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-card class="pa-2" outlined tile>{{testingStatus}}</v-card>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <div v-if="testingStatus">
+                Congratulation &#127775;, the training error rate is really close to the testing error rate.
+                <br />We now know that our model is ready to be used &#127870;.
+              </div>
+            </div>
+            <v-btn
+              @click="test()"
+              :disabled="disableTest"
+              :loading="loadingTest"
+              color="primary"
+              rounded
+              class="my-3 ml-3"
+            >Test model &#128170;</v-btn>
+          </v-card>
+          <v-btn
+            color="primary"
+            @click="next()"
+            rounded
+            :disabled="disableStep4"
+            class="mb-2"
+          >Continue</v-btn>
+          <v-btn text rounded class="ml-3" @click="previous()">Previous</v-btn>
+        </v-stepper-content>
+
+        <v-stepper-step :complete="step > 5" step="5">Predict</v-stepper-step>
+        <v-stepper-content step="5">
+          <v-card outlined class="mb-5 pa-4">
+            <div class="body-1 ml-3 mt-3 mb-2">
+              Here we are, we can now use our model to predict the price of any real estate &#127968;.
+              <br />Enjoy &#127878;
+            </div>
+            <v-container v-if="testingStatus" class="mt-3 mb-0">
+              <v-row no-gutters>
+                <v-col cols="6" sm="12">
+                  <v-text-field
+                    type="number"
+                    label="Solo"
+                    placeholder="ex: 2000"
+                    solo
+                    v-model="predictionInput"
+                    suffix="Square feet"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="6" sm="12">
+                  <div class="pa-3" tile v-if="predictionOutput">
+                    <strong>{{ predictionOutput }}</strong>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-container>
+
+            <v-btn @click="predict()" color="primary" rounded class="mb-3 ml-3">Predict &#128302;</v-btn>
+          </v-card>
+          <!-- <v-btn color="primary" @click="step = 1" rounded>Continue</v-btn> -->
+          <v-btn text rounded class="ml-3" @click="previous()">Previous</v-btn>
+        </v-stepper-content>
+      </v-stepper>
+    </v-container>
     <!-- <v-btn @click="save()" :disabled="disableSave">Save</v-btn> -->
     <!-- <v-btn @click="load()" :disabled="disableLoadModel">Load Model</v-btn> -->
   </div>
@@ -95,8 +217,15 @@ export default {
   data() {
     return {
       step: 1,
+      epoch: 0,
+      disableStep1: true,
+      disableStep2: true,
+      disableStep3: true,
+      disableStep4: true,
+
       disableLoadData: false,
       loadingData: false,
+      disablePrepareData: true,
       disableCreateModel: false,
 
       disableTest: false,
@@ -138,8 +267,19 @@ export default {
         // If odd number of elements
         this.points.pop(); // remove one element
       }
-      tf.util.shuffle(this.points);
       this.plot(this.points, "Square feet");
+      this.disablePrepareData = false;
+      this.loadingData = false;
+      this.disableLoadData = true;
+      this.$store.commit("setSnackbar", {
+        color: "success",
+        timeout: 3000,
+        text: "Data successfully loaded"
+      });
+    },
+    prepareData() {
+      this.disablePrepareData = true;
+      tf.util.shuffle(this.points);
 
       // Extract Features (inputs)
       const featureValues = this.points.map(p => p.x);
@@ -168,15 +308,12 @@ export default {
       );
 
       // Update status and enable train button
-      this.trainingStatus = "No model trained";
-      this.disableTrain = false;
-      this.disableLoadModel = false;
-      this.loadingData = false;
-      this.disableLoadData = true;
+      // this.trainingStatus = "No model trained";
+      this.disableStep1 = false;
       this.$store.commit("setSnackbar", {
         color: "success",
         timeout: 3000,
-        text: "Data successfully loaded"
+        text: "Data successfully prepared"
       });
     },
     createModel() {
@@ -206,6 +343,9 @@ export default {
       tfvis.show.modelSummary({ name: "Model summary" }, this.model);
       const layer = this.model.getLayer(undefined, 0);
       tfvis.show.layer({ name: "Layer 1" }, layer);
+
+      this.disableStep2 = false;
+      this.disableTrain = false;
       this.$store.commit("setSnackbar", {
         color: "success",
         timeout: 3000,
@@ -213,8 +353,6 @@ export default {
       });
     },
     async train() {
-      this.trainingStatus = "Training...";
-
       this.loadingTrain = true;
       await this.plotPredictionLine();
 
@@ -222,14 +360,12 @@ export default {
       const trainingLoss = result.history.loss.pop();
       const validationLoss = result.history.val_loss.pop();
 
-      this.trainingStatus =
-        "Trained (unsaved)\n" +
-        `Loss: ${trainingLoss.toPrecision(5)}\n` +
-        `Validation loss: ${validationLoss.toPrecision(5)}`;
-      // this.disableSave = false;
-      this.disablePredict = false;
+      this.trainingStatus = trainingLoss.toPrecision(5);
+      // +`Validation loss: ${validationLoss.toPrecision(5)}`;
+
       this.disableTrain = true;
       this.loadingTrain = false;
+      this.disableStep3 = false;
       this.$store.commit("setSnackbar", {
         color: "success",
         timeout: 3000,
@@ -254,6 +390,7 @@ export default {
           callbacks: {
             onEpochEnd,
             onEpochBegin: async function() {
+              self.epoch += 1;
               await self.plotPredictionLine();
               const layer = self.model.getLayer(undefined, 0);
               tfvis.show.layer({ name: "Layer 1" }, layer);
@@ -270,8 +407,10 @@ export default {
         this.testingLabelTensor
       );
       const loss = (await lossTensor.dataSync())[0];
-      this.testingStatus = `Testing set loss: ${loss.toPrecision(5)}`;
+      this.testingStatus = loss.toPrecision(5);
+
       this.loadingTest = false;
+      this.disableStep4 = false;
       this.$store.commit("setSnackbar", {
         color: "success",
         timeout: 3000,
@@ -368,8 +507,14 @@ export default {
     denormalise(tensor, min, max) {
       const denormalisedTensor = tensor.mul(max.sub(min)).add(min);
       return denormalisedTensor;
+    },
+    previous() {
+      this.step -= 1;
+      this.disableContinue = false;
+    },
+    next() {
+      this.step += 1;
     }
-
     // async save() {
     //   const saveResults = await this.model.save(
     //     `localstorage://${this.storageID}`

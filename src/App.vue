@@ -1,6 +1,11 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar
+      app
+      color="transparent"
+      dark
+      src="https://i.imgur.com/qWFL7Xk.jpg"
+    >
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -20,24 +25,7 @@
             fab
             depressed
             small
-            class="ml-2 mt-1"
-            color="transparent"
-            @click="openInformationDialog()"
-          >
-            <v-icon>mdi-information-outline</v-icon>
-          </v-btn>
-        </template>
-        <span>Information</span>
-      </v-tooltip>
-      <v-spacer></v-spacer>
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn
-            v-on="on"
-            fab
-            depressed
-            small
-            class="mr-2"
+            class="ml-4"
             color="transparent"
             @click="toggleVisor()"
           >
@@ -46,6 +34,22 @@
         </template>
         <span>Charts</span>
       </v-tooltip>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            v-on="on"
+            fab
+            depressed
+            small
+            class="ml-2"
+            color="transparent"
+            @click="openInformationDialog()"
+          >
+            <v-icon>mdi-information-outline</v-icon>
+          </v-btn>
+        </template>
+        <span>Information</span>
+      </v-tooltip>
     </v-app-bar>
 
     <v-content>
@@ -53,21 +57,29 @@
     </v-content>
     <snackbar />
     <informationDialog />
-    <footers />
+    <v-footer padless>
+      <v-col class="text-center py-2" cols="12">
+        Designed with ❤️ by
+        <a
+          target="_blank"
+          href="https://github.com/FelixBecquart1990"
+          style="text-decoration: none;"
+          >Félix Becquart</a
+        >
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
 import Snackbar from "./components/Snackbar";
-import Footers from "./components/Footers";
 import InformationDialog from "./components/InformationDialog";
 import * as tfvis from "@tensorflow/tfjs-vis";
 export default {
   name: "App",
   components: {
     Snackbar,
-    InformationDialog,
-    Footers
+    InformationDialog
   },
 
   methods: {
