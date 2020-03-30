@@ -26,7 +26,13 @@
           <v-card class="mb-5 pa-4" outlined>
             <h3 class="headline mb-3">Load data</h3>
             <div class="body-1 ml-3">
-              First we need to extract our dataset from a local CSV file &#128196; available in this application.
+              First we need to extract our dataset from a local
+              <a
+                href="https://raw.githubusercontent.com/FelixBecquart1990/visualmachinelearning/master/public/data.csv"
+                target="_blank"
+                class="text--info"
+                style="text-decoration: none;"
+              >CSV file &#128196;</a> available in this application.
               <br />We will not use the whole dataset so we only select &#128373; the two columns that we will need:
               <p class="my-2 ml-3">
                 &#128319; Price &#128178;
@@ -49,8 +55,20 @@
                   <br />To fit our model, we now need to prepare &#127869; our dataset with the following steps:
                   <p class="my-2 ml-3">
                     &#128319; Shuffle &#127922; the dataset to avoid unbalanced training
-                    <br />&#128319; Normalize &#127981; the dataset to work with the same scale
-                    <br />&#128319; Split the dataset into a training &#128296; dataset and a testing &#128269; dataset
+                    <br />&#128319;
+                    <a
+                      href="https://developers.google.com/machine-learning/data-prep/transform/normalization"
+                      target="_blank"
+                      class="text--info"
+                      style="text-decoration: none;"
+                    >Normalize</a> &#127981; the dataset to work with the same scale
+                    <br />&#128319;
+                    <a
+                      href="https://developers.google.com/machine-learning/crash-course/training-and-test-sets/splitting-data"
+                      target="_blank"
+                      class="text--info"
+                      style="text-decoration: none;"
+                    >Split the dataset</a> into a training &#128296; dataset and a testing &#128269; dataset
                   </p>
                 </div>
 
@@ -83,8 +101,20 @@
               <br />
               <br />Next, our model needs to be compiled with parameters like:
               <p class="my-2 ml-3">
-                &#128319; An activation function &#128678;
-                <br />&#128319; The way we want to compute the error &#128681;
+                &#128319; An
+                <a
+                  href="https://developers.google.com/machine-learning/crash-course/introduction-to-neural-networks/anatomy#common-activation-functions"
+                  target="_blank"
+                  class="text--info"
+                  style="text-decoration: none;"
+                >activation function</a> &#128678;
+                <br />&#128319; The way we want to compute
+                <a
+                  href="https://developers.google.com/machine-learning/glossary#loss"
+                  target="_blank"
+                  class="text--info"
+                  style="text-decoration: none;"
+                >the error</a> &#128681;
               </p>
             </div>
             <v-btn
