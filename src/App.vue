@@ -52,6 +52,8 @@
     </v-content>
     <snackbar />
     <informationDialog />
+    <addStarOnGithubDialog />
+
     <v-footer padless>
       <v-col class="text-center py-2" cols="12">
         Designed with ❤️ by
@@ -68,12 +70,15 @@
 <script>
 import Snackbar from "./components/Snackbar";
 import InformationDialog from "./components/InformationDialog";
+import AddStarOnGithubDialog from "./components/AddStarOnGithubDialog";
+
 import * as tfvis from "@tensorflow/tfjs-vis";
 export default {
   name: "App",
   components: {
     Snackbar,
-    InformationDialog
+    InformationDialog,
+    AddStarOnGithubDialog
   },
 
   methods: {

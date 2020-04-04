@@ -46,7 +46,7 @@
               color="primary"
               rounded
               class="my-3 ml-3"
-            >Load Data &#128722;</v-btn>
+            >Visualize Data &#128722;</v-btn>
             <v-scroll-y-transition>
               <div v-if="disableLoadData">
                 <h3 class="headline mb-3">Prepare data</h3>
@@ -236,7 +236,7 @@
             </div>
             <v-container class="mt-3 mb-0">
               <v-row no-gutters>
-                <v-col cols="12" sm="12" md="6">
+                <v-col cols="12" md="12" lg="5" xl="6">
                   <v-text-field
                     type="number"
                     label="Solo"
@@ -246,9 +246,13 @@
                     suffix="Square feet"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="6">
+                <v-col cols="12" lg="12" xl="6">
                   <v-scroll-y-transition>
-                    <div class="pa-3" tile v-if="predictionOutput">
+                    <div
+                      :class="{'pa-3': $vuetify.breakpoint.xl, 'pb-3': $vuetify.breakpoint.lgAndDown}"
+                      tile
+                      v-if="predictionOutput"
+                    >
                       <strong>{{ predictionOutput }}</strong>
                     </div>
                   </v-scroll-y-transition>
@@ -258,23 +262,15 @@
 
             <v-btn @click="predict()" color="primary" rounded class="mb-3 ml-3">Predict &#128302;</v-btn>
           </v-card>
-          <!-- <v-btn color="primary" @click="step = 1" rounded>Continue</v-btn> -->
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-btn
-                v-on="on"
-                fab
-                depressed
-                small
-                class="ml-2"
-                color="transparent"
-                @click="openInformationDialog()"
-              >
-                <v-icon class="text--primary">mdi-information-outline</v-icon>
-              </v-btn>
-            </template>
-            <span>Information</span>
-          </v-tooltip>
+
+          <v-btn
+            color="primary"
+            @click="openAddStarOnGithubDialog()"
+            :text="dialogAddStarOnGithubOpened"
+            rounded
+            :disabled="disableStep5"
+          >Continue</v-btn>
+
           <v-btn text rounded class="ml-3" @click="previous()">Previous</v-btn>
         </v-stepper-content>
       </v-stepper>
@@ -299,6 +295,7 @@ export default {
       disableStep2: true,
       disableStep3: true,
       disableStep4: true,
+      disableStep5: true,
 
       disableLoadData: false,
       loadingData: false,
@@ -325,7 +322,9 @@ export default {
       trainingFeatureTensor: null,
       testingFeatureTensor: null,
       trainingLabelTensor: null,
-      testingLabelTensor: null
+      testingLabelTensor: null,
+
+      dialogAddStarOnGithubOpened: false
     };
   },
   methods: {
@@ -521,6 +520,7 @@ export default {
           const outputValueRounded = (outputValue / 1000).toFixed(0) * 1000;
           this.predictionOutput = `The predicted house price is $${outputValueRounded}`;
         });
+        this.disableStep5 = false;
       }
     },
     async toggleVisor() {
@@ -593,8 +593,10 @@ export default {
     next() {
       this.step += 1;
     },
-    openInformationDialog() {
-      this.$store.commit("setInformationDialog", true);
+    openAddStarOnGithubDialog() {
+      tfvis.visor().close();
+      this.dialogAddStarOnGithubOpened = true;
+      this.$store.commit("setAddStarOnGithubDialog", true);
     }
     // async save() {
     //   const saveResults = await this.model.save(
